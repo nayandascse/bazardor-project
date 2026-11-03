@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root { --green: #16834a; --green-dark: #0b6035; --cream: #f7f8f2; --ink: #17251c; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--cream); color: var(--ink); font-family: Arial, "Noto Sans Bengali", sans-serif; }
+button, input, select { font: inherit; }
+.container-main { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+.nav-link { display: inline-flex; align-items: center; padding: 10px 14px; border-radius: 999px; color: #4b5a50; transition: .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: #e2f4e7; color: #0c713a; }
+.ticker { overflow: hidden; white-space: nowrap; background: #113e2a; color: #f3fff6; }
+.ticker-track { display: inline-flex; min-width: max-content; animation: ticker 36s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+.hero-pattern { background: radial-gradient(circle at 80% 20%, #d7f3d7 0, transparent 36%), linear-gradient(135deg, #f0f8e9, #fffdf3); }
+.product-card { border: 1px solid #e4e9e0; background: white; border-radius: 20px; padding: 20px; transition: transform .2s, box-shadow .2s; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 35px #173b1a12; border-color: #b9dec2; }
+.skeleton { animation: pulse 1.4s ease-in-out infinite; background: linear-gradient(90deg,#e8ece5,#f5f7f2,#e8ece5); background-size: 200% 100%; }
+@keyframes pulse { to { background-position: -200% 0; } }
+@media (max-width: 640px) { .container-main { width: min(100% - 28px, 1180px); } }

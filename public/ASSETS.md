@@ -1,0 +1,1 @@
+Assets supplied with the assignment: `bazar-hero.png` (hero illustration) and `logo-icon.png` (small logo icon). The original Figma `.fig` file is stored at the project root as `design-reference.fig`.
