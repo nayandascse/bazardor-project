@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Github, Mail } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
-export default function SignUpPage() {
+ const SignUpPage = () => {
   const router = useRouter();
   const [name,setName]=useState(""); const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [busy,setBusy]=useState(false);
   async function submit(e: React.FormEvent) {
@@ -30,3 +30,5 @@ export default function SignUpPage() {
     <p className="mt-6 text-center text-sm text-gray-500">আগেই অ্যাকাউন্ট আছে? <Link className="font-bold text-green-800" href="/signin">সাইন ইন</Link></p>
   </div></div>;
 }
+
+export default SignUpPage;
