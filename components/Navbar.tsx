@@ -8,7 +8,7 @@ import { authClient } from "@/lib/auth-client";
 import type { Category, Product } from "@/types/product";
 import { money } from "@/lib/utils";
 
-export default function Navbar({ categories, products }: { categories: Category[]; products: Product[] }) {
+const Navbar = ({ categories, products }: { categories: Category[]; products: Product[] }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,3 +55,4 @@ export default function Navbar({ categories, products }: { categories: Category[
     </div></div>
   </header>;
 }
+export default Navbar;
