@@ -26,9 +26,10 @@ export type Product = {
   markets: MarketPrice[];
 };
 
-export type Category = {
+export interface Category {
   id: string | number;
   name: string;
   slug: string;
   icon: string;
-};
+  image?: string;
+}

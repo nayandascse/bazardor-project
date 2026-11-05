@@ -2,9 +2,14 @@ import { normalizeCategories, normalizeProducts } from "@/lib/utils";
 import type { Product, Category } from "@/types/product";
 
 const bases = [
-  process.env.BAZARDOR_API_URL || "https://openapi.programming-hero.com/api/bazardor",
-  process.env.BAZARDOR_API_FALLBACK_1 || "https://api.api-store.workers.dev/api/bazardor",
-  process.env.BAZARDOR_API_FALLBACK_2 || "https://api.abcz.workers.dev/api/bazardor"
+  process.env.BAZARDOR_API_URL ||
+    "https://openapi.programming-hero.com/api/bazardor",
+
+  process.env.BAZARDOR_API_FALLBACK_1 ||
+    "https://api.api-store.workers.dev/api/bazardor",
+
+  process.env.BAZARDOR_API_FALLBACK_2 ||
+    "https://api.abcz.workers.dev/api/bazardor",
 ];
 
 async function request(path: string) {

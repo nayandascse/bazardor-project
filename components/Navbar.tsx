@@ -19,7 +19,15 @@ const Navbar = ({ categories, products }: { categories: Category[]; products: Pr
     router.push("/");
     router.refresh();
   };
-  const links = [{ name: "সব পণ্য", slug: "" }, ...categories.map(c => ({ name: c.name, slug: c.slug }))].slice(0, 7);
+const links = [
+  { name: "সব পণ্য", slug: "" },
+  ...categories
+    .filter((c) => c.name && c.slug)
+    .map((c) => ({
+      name: c.name.trim(),
+      slug: c.slug,
+    })),
+].slice(0, 7);
   const tickerItems = products.slice(0, 12);
   return <header className="sticky top-0 z-40 border-b border-green-100 bg-white/95 backdrop-blur">
     <div className="container-main flex min-h-[78px] items-center justify-between gap-4 py-3">
