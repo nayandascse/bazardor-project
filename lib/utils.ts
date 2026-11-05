@@ -69,9 +69,13 @@ export function normalizeProducts(payload: any): Product[] {
           minPrice: m.min ?? m.min_price ?? m.minPrice ?? price,
           maxPrice: m.max ?? m.max_price ?? m.maxPrice ?? price,
           price:
-            m.price ??
-            (Number(m.min ?? 0) + Number(m.max ?? 0)) / 2 ??
-            price,
+  Number(
+    m.price ??
+    m.current_price ??
+    (
+      (Number(m.min ?? 0) + Number(m.max ?? 0)) / 2
+    )
+  ) || price,
           averagePrice: m.average_price ?? m.averagePrice,
           unit: item.unit ?? "kg",
         }))
