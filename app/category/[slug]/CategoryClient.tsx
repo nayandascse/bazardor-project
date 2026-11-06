@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronDown, ArrowLeft } from "lucide-react";
 import ProductGrid from "@/components/ProductGrid";
 import type { Product } from "@/types/product";
+import { productEmoji } from "@/lib/utils";
 
 interface CategoryClientProps {
   title: string;
@@ -21,6 +22,9 @@ export default function CategoryClient({
   products,
 }: CategoryClientProps) {
   const [sort, setSort] = useState("default");
+
+  // Automatically detect category emoji
+  const categoryIcon = productEmoji(title, title) || icon || "🛍️";
 
   const sorted = useMemo(() => {
     const copy = [...products];
@@ -48,9 +52,14 @@ export default function CategoryClient({
 
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <div className="text-5xl">{icon}</div>
-          
-          <h1 className="mt-3 text-3xl font-black">{title}</h1>
+          <div className="text-5xl">
+            {categoryIcon}
+          </div>
+
+          <h1 className="mt-3 text-3xl font-black">
+            {title}
+          </h1>
+
           <p className="mt-2 text-gray-500">
             এই ক্যাটাগরির পণ্য ও আজকের বাজারদর
           </p>
