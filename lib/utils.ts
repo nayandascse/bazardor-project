@@ -1,6 +1,18 @@
 
 import type { Product } from "@/types/product";
 
+// Market data types
+type NormalizedMarket = {
+  bazar: string;
+  market?: string;
+  name?: string;
+  minPrice: number;
+  maxPrice: number;
+  price: number;
+  averagePrice: number;
+  unit: string;
+};
+
 // Convert number to Bangla number format
 export const bnNumber = (value: number | string) =>
   Number(value || 0).toLocaleString("bn-BD", {
@@ -15,11 +27,12 @@ export const money = (value: number | string) =>
 export function productEmoji(category = "", name = "") {
   const s = `${category} ${name}`.toLowerCase();
 
-  if (/চাল|rice|ডাল|lentil/.test(s)) return "🍚";
+  if (/ডাল|dal|daal|lentil|pulse/.test(s)) return "🫘";
+  if (/চাল|rice|chal/.test(s)) return "🍚";
   if (/আলু|potato/.test(s)) return "🥔";
   if (/পেঁয়াজ|পিঁয়াজ|onion/.test(s)) return "🧅";
   if (/রসুন|garlic/.test(s)) return "🧄";
-  if (/আদা|ginger/.test(s)) return "🥔";
+  if (/আদা|ginger/.test(s)) return "🫚";
   if (/মরিচ|chili|pepper/.test(s)) return "🌶️";
   if (/মাছ|fish|ইলিশ/.test(s)) return "🐟";
   if (/মুরগি|মাংস|chicken|meat/.test(s)) return "🍗";
@@ -34,7 +47,6 @@ export function productEmoji(category = "", name = "") {
 // Safely convert values to numbers
 function toNumber(value: unknown, fallback = 0): number {
   const number = Number(value);
-
   return Number.isFinite(number) ? number : fallback;
 }
 
@@ -50,11 +62,7 @@ export function normalizeProducts(payload: unknown): Product[] {
       data?.result ??
       [];
 
-  const items = Array.isArray(raw)
-    ? raw
-    : raw
-      ? [raw]
-      : [];
+  const items = Array.isArray(raw) ? raw : raw ? [raw] : [];
 
   return items.map((item: any, index: number) => {
     const name = String(
@@ -84,19 +92,15 @@ export function normalizeProducts(payload: unknown): Product[] {
     );
 
     // Normalize market prices
-    const markets = Array.isArray(item.markets)
-      ? item.markets.map((m: any) => {
+    const markets: NormalizedMarket[] = Array.isArray(item.markets)
+      ? item.markets.map((m: any): NormalizedMarket => {
           const min = toNumber(
-            m.min ??
-              m.min_price ??
-              m.minPrice,
+            m.min ?? m.min_price ?? m.minPrice,
             price
           );
 
           const max = toNumber(
-            m.max ??
-              m.max_price ??
-              m.maxPrice,
+            m.max ?? m.max_price ?? m.maxPrice,
             price
           );
 
@@ -201,7 +205,7 @@ export function normalizeProducts(payload: unknown): Product[] {
       unit: String(item.unit ?? "kg"),
 
       emoji: String(
-        item.image ?? item.emoji ?? productEmoji(category, name)
+        item.emoji ?? productEmoji(category, name)
       ),
 
       price,
@@ -258,9 +262,7 @@ export function normalizeCategories(payload: unknown) {
           name.toLowerCase().replace(/\s+/g, "-")
       ),
 
-      icon: String(
-        item.icon ?? productEmoji(name, name)
-      ),
+      icon: productEmoji(name, name),
 
       image:
         item.image ??
