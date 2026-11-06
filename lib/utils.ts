@@ -31,7 +31,14 @@ export function normalizeProducts(payload: any): Product[] {
       payload?.result ??
       [];
 
-  const items = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  // const items = Array.isArray(raw) ? raw : raw ? [raw] : [];
+
+  const items = Array.isArray(raw)
+  ? raw
+  : raw
+    ? [raw]
+    : [];
+  
 
   return items.map((item: any, index: number) => {
     const name = String(

@@ -1,3 +1,4 @@
+
 import { normalizeCategories, normalizeProducts } from "@/lib/utils";
 import type { Product, Category } from "@/types/product";
 
@@ -15,28 +16,62 @@ const bases = [
 async function request(path: string) {
   for (const base of bases) {
     try {
-      const response = await fetch(`${base}${path}`, { next: { revalidate: 300 } });
+      const response = await fetch(
+        `${base.replace(/\/$/, "")}${path}`,
+        { next: { revalidate: 300 } }
+      );
+
       if (!response.ok) continue;
+
       return await response.json();
-    } catch { /* Try the next configured API. */ }
+    } catch (error) {
+      console.error(`API request failed: ${base}${path}`, error);
+    }
   }
+
   return null;
 }
 
-export async function getProducts(category?: string): Promise<Product[]> {
-  const query = category ? `?category=${encodeURIComponent(category)}` : "";
+export async function getProducts(
+  category?: string
+): Promise<Product[]> {
+  const query = category
+    ? `?category=${encodeURIComponent(category)}`
+    : "";
+
   const data = await request(`/products${query}`);
+
   return normalizeProducts(data);
 }
-export async function getProduct(slug: string): Promise<Product | undefined> {
-  const data = await request(`/products/${encodeURIComponent(slug)}`);
-  const products = normalizeProducts(data?.data ? data : data);
-  return products.find(p => p.slug === slug || String(p.id) === slug) ?? products[0];
+
+export async function getProduct(
+  slug: string
+): Promise<Product | undefined> {
+  const data = await request(
+    `/products/${encodeURIComponent(slug)}`
+  );
+
+  const products = normalizeProducts(data);
+
+  return (
+    products.find(
+      (p) => p.slug === slug || String(p.id) === slug
+    ) ?? products[0]
+  );
 }
+
 export async function getCategories(): Promise<Category[]> {
-  return normalizeCategories(await request("/categories"));
+  const data = await request("/categories");
+
+  return normalizeCategories(data);
 }
-export async function getCategory(slug: string): Promise<Category | undefined> {
-  const data = await request(`/categories/${encodeURIComponent(slug)}`);
+
+export async function getCategory(
+  slug: string
+): Promise<Category | undefined> {
+  const data = await request(
+    `/categories/${encodeURIComponent(slug)}`
+  );
+
   return normalizeCategories(data)[0];
 }
